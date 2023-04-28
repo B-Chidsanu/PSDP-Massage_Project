@@ -1,7 +1,7 @@
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/material.dart';
-import 'package:massage/screens/AccountScreen.dart';
+import 'package:massage/screens/UserScreen.dart';
 import 'package:massage/screens/BookingScreen.dart';
 import 'package:massage/screens/Homes/home_screen.dart';
 import 'package:massage/screens/NotificationScreen.dart';
@@ -20,7 +20,7 @@ class _NavigatorBarState extends State<NavigatorBar> {
     const HomeScreen(),
     const BookingScreen(),
     const NotificationScreen(),
-    const AccountScreen(),
+    const UserScreen(),
   ];
   final List<BottomNavigationBarItem> menuBar = <BottomNavigationBarItem>[
     BottomNavigationBarItem(

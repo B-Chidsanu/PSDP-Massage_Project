@@ -9,7 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
 import 'package:massage/screens/Login_Regis/InputBox/inputbox.dart';
 import 'package:massage/screens/Login_Regis/InputBox/button.dart';
-import 'package:massage/screens/Login_Regis/Profile.dart';
+
 import 'package:massage/screens/Login_Regis/login_screen.dart';
 
 import 'package:http/http.dart';

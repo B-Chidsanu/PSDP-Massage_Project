@@ -26,13 +26,48 @@ class _SelectMasseuseState extends State<SelectMasseuse> {
             children: [
               Image.asset(
                   width: 180, height: 170, "assets/images/massage_logo.png"),
-              MasseuseBuuton(LookMasseus(), Color.fromARGB(255, 2, 120, 216),
-                  Icons.person, 'Ms.....', '300฿', 'Emptry'),
-              SizedBox(
-                height: 10,
+              Container(
+                width: 320,
+                height: double.maxFinite,
+                decoration: BoxDecoration(color: Colors.white),
+                child: Column(
+                  children: [
+                    MasseuseBuuton(
+                        LookMasseus(),
+                        Color.fromARGB(255, 2, 120, 216),
+                        Icons.person,
+                        'Ms.....',
+                        '300฿',
+                        'Emptry'),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    MasseuseBuuton(
+                        LookMasseus(),
+                        Color.fromARGB(255, 2, 120, 216),
+                        Icons.person,
+                        'Ms.....',
+                        '300฿',
+                        'Emptry'),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    MasseuseBuuton(
+                        LookMasseus(),
+                        Color.fromARGB(255, 2, 120, 216),
+                        Icons.person,
+                        'Ms.....',
+                        '300฿',
+                        'Emptry'),
+                  ],
+                ),
               ),
-              MasseuseBuuton(LookMasseus(), Colors.redAccent.shade200,
-                  Icons.person, 'Mr.....', '500฿', 'Emptry'),
+
+              // SizedBox(
+              //   height: 10,
+              // ),
+              // MasseuseBuuton(LookMasseus(), Colors.redAccent.shade200,
+              //     Icons.person, 'Mr.....', '500฿', 'Emptry'),
             ],
           ),
         ),
