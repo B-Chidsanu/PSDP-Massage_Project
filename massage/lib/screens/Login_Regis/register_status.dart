@@ -3,7 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:massage/screens/Login_Regis/InputBox/button.dart';
-import 'package:massage/screens/Login_Regis/register_screen.dart';
+import 'package:massage/screens/Login_Regis/masseus_register_screen.dart';
 
 class RegisterStatus extends StatefulWidget {
   const RegisterStatus({super.key});

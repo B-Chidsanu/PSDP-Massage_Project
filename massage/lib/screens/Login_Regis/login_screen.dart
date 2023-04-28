@@ -3,7 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:massage/screens/Login_Regis/register_screen.dart';
+import 'package:massage/screens/Login_Regis/masseus_register_screen.dart';
 import 'package:validators/validators.dart';
 
 class LoginScreen extends StatefulWidget {
