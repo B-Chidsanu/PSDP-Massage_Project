@@ -29,6 +29,7 @@ dependencies:
   validators: ^3.0.0
   image_picker: ^0.8.7+4
   http: ^0.13.5
+  
 
 
 dev_dependencies:

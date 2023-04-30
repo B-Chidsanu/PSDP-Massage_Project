@@ -5,13 +5,17 @@ import 'package:flutter/src/widgets/placeholder.dart';
 class ButtonMasseus extends StatelessWidget {
   final String title;
   final IconData icon;
+  final Widget screens;
 
-  const ButtonMasseus(this.icon, this.title);
+  const ButtonMasseus(this.icon, this.title, this.screens);
 
   @override
   Widget build(BuildContext context) {
     return TextButton.icon(
-      onPressed: () {},
+      onPressed: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (BuildContext context) => screens));
+      },
       icon: Icon(icon),
       label: Text(
         title,

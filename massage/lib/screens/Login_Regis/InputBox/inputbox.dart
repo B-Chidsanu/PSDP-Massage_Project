@@ -5,14 +5,23 @@ class InputBox extends StatelessWidget {
   final String hintTitle;
   final IconData icon;
   final Color color;
+  final TextEditingController control;
 
-  const InputBox(this.title, this.hintTitle, this.icon, this.color);
+  const InputBox(
+      this.title, this.hintTitle, this.icon, this.color, this.control);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: TextFormField(
+        validator: (val) {
+          if (val!.isEmpty) {
+            return 'Empty';
+          }
+          return null;
+        },
+        controller: control,
         decoration: InputDecoration(
           focusedBorder: const UnderlineInputBorder(
             borderSide: BorderSide.none,

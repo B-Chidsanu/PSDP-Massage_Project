@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:massage/screens/Items/popupbutton.dart';
+import 'package:massage/screens/Login_Regis/login_screen.dart';
 import 'package:massage/screens/Selectmasseuse/ButtonMasseus/button_masseus.dart';
 
 class UserScreen extends StatefulWidget {
@@ -34,8 +36,8 @@ class _UserScreenState extends State<UserScreen> {
                   ),
                 ),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    MyPopupButton(),
                     Image.asset(
                       'assets/images/user.png',
                       fit: BoxFit.contain,
@@ -55,7 +57,7 @@ class _UserScreenState extends State<UserScreen> {
               ),
               Container(
                 width: 300,
-                height: 350,
+                height: 400,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
@@ -66,27 +68,40 @@ class _UserScreenState extends State<UserScreen> {
                   children: [
                     Container(
                       width: 240,
-                      height: 290,
+                      height: 340,
                       decoration: BoxDecoration(
                         color: Colors.white,
                       ),
                       child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             ButtonMasseus(
                               Icons.location_on,
-                              'My Address   >',
+                              'My Address                 >',
+                              UserScreen(),
                             ),
                             Underline(),
-                            ButtonMasseus(Icons.group, 'Account         >'),
+                            ButtonMasseus(
+                              Icons.group,
+                              'Account                       >',
+                              UserScreen(),
+                            ),
+                            Underline(),
+                            ButtonMasseus(Icons.notifications,
+                                'Notifications               >', UserScreen()),
                             Underline(),
                             ButtonMasseus(
-                                Icons.notifications, 'Notifications >'),
+                                Icons.edit_square,
+                                'Edit Profile                  >',
+                                UserScreen()),
+                            Underline(),
+                            ButtonMasseus(Icons.error,
+                                'About Me                    >', UserScreen()),
                             Underline(),
                             ButtonMasseus(
-                                Icons.edit_square, 'Edit Profile    >'),
-                            Underline(),
-                            ButtonMasseus(Icons.error, 'About Me     >'),
+                                Icons.error,
+                                'Logout                         >',
+                                LoginScreen()),
                           ]),
                     )
                   ],
@@ -96,17 +111,17 @@ class _UserScreenState extends State<UserScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_month), label: 'Booking'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.notifications), label: 'Notification'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Me'),
-        ],
-      ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   type: BottomNavigationBarType.fixed,
+      //   items: [
+      //     BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+      //     BottomNavigationBarItem(
+      //         icon: Icon(Icons.calendar_month), label: 'Booking'),
+      //     BottomNavigationBarItem(
+      //         icon: Icon(Icons.notifications), label: 'Notification'),
+      //     BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Me'),
+      //   ],
+      // ),
     );
   }
 }
@@ -120,8 +135,8 @@ class Underline extends StatelessWidget {
       height: 10,
       color: Colors.grey,
       thickness: 1,
-      indent: 40,
-      endIndent: 40,
+      indent: 1,
+      endIndent: 1,
     );
   }
 }

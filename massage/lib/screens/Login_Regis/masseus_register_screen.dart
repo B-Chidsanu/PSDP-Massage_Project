@@ -16,15 +16,21 @@ import 'package:http/http.dart';
 
 enum ProductTypeEnum { Male, Female }
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+class MasseusregisScreen extends StatefulWidget {
+  const MasseusregisScreen({super.key});
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<MasseusregisScreen> createState() => _MasseusregisScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
-  TextEditingController _textarea = TextEditingController();
+class _MasseusregisScreenState extends State<MasseusregisScreen> {
+  TextEditingController username = TextEditingController();
+  TextEditingController password = TextEditingController();
+  TextEditingController name = TextEditingController();
+  TextEditingController phone = TextEditingController();
+  // MenuController gender = MenuController();
+  TextEditingController email = TextEditingController();
+  TextEditingController address = TextEditingController();
 
   File? image;
   File? image1;
@@ -87,18 +93,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Column(children: [
-                    InputBox(
-                      'Username',
-                      'Enter Your Username',
-                      Icons.person,
-                      Colors.purple,
-                    ),
+                    InputBox('Username', 'Enter Your Username', Icons.person,
+                        Colors.purple, username),
                     InputBox('Password', 'Enter Your Password', Icons.key,
-                        Colors.purple),
-                    InputBox(
-                        'Name', 'Enter Your Name', Icons.person, Colors.purple),
+                        Colors.purple, password),
+                    InputBox('Name', 'Enter Your Name', Icons.person,
+                        Colors.purple, name),
                     InputBox('Phone', 'Enter Your Phone number', Icons.phone,
-                        Colors.purple),
+                        Colors.purple, email),
                     Row(
                       children: [
                         Expanded(
@@ -141,13 +143,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     SizedBox(
                       width: 5,
                     ),
-                    InputBox('E-mail', 'Enter Your E-mail', Icons.email,
-                        Colors.purple),
+                    // InputBox('E-mail', 'Enter Your E-mail', Icons.email,
+                    //     Colors.purple),
                     Padding(
                       padding: const EdgeInsets.only(
                           left: 20, right: 20, bottom: 20),
                       child: TextFormField(
-                        controller: _textarea,
+                        controller: address,
                         keyboardType: TextInputType.multiline,
                         maxLines: 4,
                         maxLength: 200,

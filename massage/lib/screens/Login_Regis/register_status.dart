@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:massage/screens/Login_Regis/InputBox/button.dart';
 import 'package:massage/screens/Login_Regis/masseus_register_screen.dart';
+import 'package:massage/screens/Login_Regis/user_register_screen.dart';
 
 class RegisterStatus extends StatefulWidget {
   const RegisterStatus({super.key});
@@ -56,7 +57,8 @@ class _RegisterStatusState extends State<RegisterStatus> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => RegisterScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => MasseusregisScreen()),
                   );
                 },
                 child: Text(
@@ -88,7 +90,7 @@ class _RegisterStatusState extends State<RegisterStatus> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => RegisterScreen()),
+                    MaterialPageRoute(builder: (context) => UserRegister()),
                   );
                 },
                 child: Text(

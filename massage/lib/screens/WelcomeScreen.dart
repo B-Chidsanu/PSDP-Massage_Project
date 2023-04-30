@@ -5,6 +5,7 @@ import 'package:lottie/lottie.dart';
 import 'package:massage/screens/Homes/home_screen.dart';
 import 'package:massage/screens/Login_Regis/login_screen.dart';
 import 'package:massage/screens/Login_Regis/masseus_register_screen.dart';
+import 'package:massage/screens/Login_Regis/register_status.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -81,7 +82,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         context,
                         MaterialPageRoute(
                             builder: (BuildContext context) =>
-                                RegisterScreen()));
+                                RegisterStatus()));
                   },
                   child: Text(
                     'Sign Up',

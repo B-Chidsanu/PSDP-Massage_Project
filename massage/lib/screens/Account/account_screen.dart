@@ -122,17 +122,17 @@ class _AccountScreenState extends State<AccountScreen> {
           ],
         ),
       )),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_month), label: 'Booking'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.notifications), label: 'Notification'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Me'),
-        ],
-      ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   type: BottomNavigationBarType.fixed,
+      //   items: [
+      //     BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+      //     BottomNavigationBarItem(
+      //         icon: Icon(Icons.calendar_month), label: 'Booking'),
+      //     BottomNavigationBarItem(
+      //         icon: Icon(Icons.notifications), label: 'Notification'),
+      //     BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Me'),
+      //   ],
+      // ),
     );
   }
 }
