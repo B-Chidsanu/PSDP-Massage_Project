@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:massage/screens/BookingScreen.dart';
+import 'package:massage/screens/Homes/home_screen.dart';
+import 'package:massage/screens/NotificationScreen.dart';
 import 'package:massage/screens/Selectmasseuse/look_masseus.dart';
 import 'package:massage/screens/Selectmasseuse/masseuse_button.dart';
+import 'package:massage/screens/UserScreen.dart';
 
 class SelectMasseuse extends StatefulWidget {
   const SelectMasseuse({super.key});
@@ -15,6 +19,9 @@ class _SelectMasseuseState extends State<SelectMasseuse> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(''),
+      ),
       backgroundColor: Color.fromARGB(255, 0, 168, 120),
       body: SafeArea(
           child: Center(
@@ -62,16 +69,12 @@ class _SelectMasseuseState extends State<SelectMasseuse> {
                   ],
                 ),
               ),
-
-              // SizedBox(
-              //   height: 10,
-              // ),
-              // MasseuseBuuton(LookMasseus(), Colors.redAccent.shade200,
-              //     Icons.person, 'Mr.....', '500฿', 'Emptry'),
             ],
           ),
         ),
       )),
     );
+    //   BookingScreen()
+    // ][1];
   }
 }

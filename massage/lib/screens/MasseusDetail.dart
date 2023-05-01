@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:massage/screens/BookingScreen.dart';
+import 'package:massage/screens/Homes/home_screen.dart';
+import 'package:massage/screens/NotificationScreen.dart';
+import 'package:massage/screens/UserScreen.dart';
 
 class MasseusDetail extends StatefulWidget {
   const MasseusDetail({super.key});
@@ -10,9 +14,28 @@ class MasseusDetail extends StatefulWidget {
 }
 
 class _MasseusDetailState extends State<MasseusDetail> {
+  int _selectedIndex = 0;
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static const List<Widget> _widgetOptions = <Widget>[
+    const HomeScreen(),
+    const BookingScreen(),
+    const NotificationScreen(),
+    const UserScreen(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('ABOUT US'),
+      ),
       // backgroundColor: Color.fromARGB(255, 0, 168, 120),
       body: SafeArea(
           child: Center(
@@ -39,7 +62,17 @@ class _MasseusDetailState extends State<MasseusDetail> {
                   height: 10,
                 ),
                 Text('นางสาว Test', style: TextStyle(fontSize: 25)),
-                reviews(),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Icon(Icons.star, color: Colors.yellow),
+                    Icon(Icons.star, color: Colors.yellow),
+                    Icon(Icons.star, color: Colors.yellow),
+                    Icon(Icons.star, color: Colors.grey),
+                    Icon(Icons.star, color: Colors.grey),
+                    Text('4.0', style: TextStyle(fontSize: 16)),
+                  ],
+                ),
                 ListTile(
                   title: Text('รายละเอียด'),
                   subtitle: Text(
@@ -48,114 +81,75 @@ class _MasseusDetailState extends State<MasseusDetail> {
                 SizedBox(
                   height: 10,
                 ),
-                botton_1(),
+                ElevatedButton(
+                  onPressed: () {},
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Icon(
+                        Icons.person,
+                        color: Colors.white,
+                        size: 60.0,
+                      ),
+                      SizedBox(height: 10.0),
+                      Column(children: <Widget>[
+                        Text('คนรีวิว 1',
+                            style:
+                                TextStyle(fontSize: 18, color: Colors.white)),
+                        Row(children: <Widget>[
+                          Icon(Icons.star, color: Colors.yellow, size: 20.0),
+                          Icon(Icons.star, color: Colors.yellow, size: 20.0),
+                          Icon(Icons.star, color: Colors.yellow, size: 20.0),
+                          Icon(Icons.star, color: Colors.yellow, size: 20.0),
+                          Icon(Icons.star, color: Colors.grey, size: 20.0),
+                        ]),
+                        Text('ลายละเอียดรีวิว',
+                            style:
+                                TextStyle(fontSize: 14, color: Colors.white)),
+                      ]),
+                    ],
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.green,
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 100, vertical: 20),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                ),
                 SizedBox(
                   height: 10,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [botton_reserve(), botton_cancel()],
+                  children: [
+                    OutlinedButton(
+                      onPressed: () {},
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: Colors.blue),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                      ),
+                      child: Text('RESERVE',
+                          style: TextStyle(fontSize: 18, color: Colors.blue)),
+                    ),
+                    OutlinedButton(
+                      onPressed: () {},
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: Colors.red),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                      ),
+                      child: Text('CANCEL',
+                          style: TextStyle(fontSize: 18, color: Colors.red)),
+                    )
+                  ],
                 )
               ]),
         ),
       )),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_month), label: 'Booking'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.notifications), label: 'Notification'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Me'),
-        ],
-      ),
     );
   }
 }
 
-Widget botton_1() {
-  return ElevatedButton(
-    onPressed: () {},
-    child: Row(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Icon(
-          Icons.person,
-          color: Colors.white,
-          size: 60.0,
-        ),
-        SizedBox(height: 10.0),
-        Column(children: <Widget>[
-          Text('คนรีวิว 1',
-              style: TextStyle(fontSize: 18, color: Colors.white)),
-          Row(children: <Widget>[
-            Icon(Icons.star, color: Colors.yellow, size: 20.0),
-            Icon(Icons.star, color: Colors.yellow, size: 20.0),
-            Icon(Icons.star, color: Colors.yellow, size: 20.0),
-            Icon(Icons.star, color: Colors.yellow, size: 20.0),
-            Icon(Icons.star, color: Colors.grey, size: 20.0),
-          ]),
-          Text('ลายละเอียดรีวิว',
-              style: TextStyle(fontSize: 14, color: Colors.white)),
-        ]),
-      ],
-    ),
-    style: ElevatedButton.styleFrom(
-      primary: Colors.green,
-      padding: EdgeInsets.symmetric(horizontal: 100, vertical: 20),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-    ),
-  );
-}
-
-// Widget img() {
-//   return Padding(
-//       padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-//       child: Column(children: [
-//         Image.asset(
-//           'images/oil-massage.jpg',
-//           height: 220.0,
-//           width: 400.0,
-//           fit: BoxFit.cover,
-//         ),
-//       ]));
-// }
-
-Widget reviews() {
-  return Row(
-    mainAxisSize: MainAxisSize.min,
-    children: <Widget>[
-      Icon(Icons.star, color: Colors.yellow),
-      Icon(Icons.star, color: Colors.yellow),
-      Icon(Icons.star, color: Colors.yellow),
-      Icon(Icons.star, color: Colors.grey),
-      Icon(Icons.star, color: Colors.grey),
-      Text('4.0', style: TextStyle(fontSize: 16)),
-    ],
-  );
-}
-
-Widget botton_reserve() {
-  return OutlinedButton(
-    onPressed: () {},
-    style: OutlinedButton.styleFrom(
-      side: BorderSide(color: Colors.blue),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-    ),
-    child: Text('RESERVE', style: TextStyle(fontSize: 18, color: Colors.blue)),
-  );
-}
-
-Widget botton_cancel() {
-  return OutlinedButton(
-    onPressed: () {},
-    style: OutlinedButton.styleFrom(
-      side: BorderSide(color: Colors.red),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-    ),
-    child: Text('CANCEL', style: TextStyle(fontSize: 18, color: Colors.red)),
-  );
-}

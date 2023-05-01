@@ -1,13 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:massage/models/post.dart';
-import 'package:massage/screens/Login_Regis/masseus_register_screen.dart';
+import 'package:massage/screens/Homes/home_screen.dart';
 import 'package:massage/screens/Login_Regis/register_status.dart';
+import 'package:massage/screens/Navigators/navigationbar.dart';
+import 'package:massage/screens/UserScreen.dart';
 import 'package:massage/services/remote_service.dart';
 import 'package:validators/validators.dart';
+import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -17,21 +20,43 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController _textEditingController = TextEditingController();
+  // TextEditingController _textEditingController = TextEditingController();
 
-  final _formKey = GlobalKey<FormState>();
+  // final _formKey = GlobalKey<FormState>();
 
-  final email = TextEditingController();
-  final password = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
 
-  bool isHidden = true;
-  bool authenticatingStatus = false;
+  // bool isHidden = true;
+  // bool authenticatingStatus = false;
 
-  @override
-  void dispose() {
-    email.dispose(); // ยกเลิกการใช้งานที่เกี่ยวข้องทั้งหมดถ้ามี
-    password.dispose();
-    super.dispose();
+  // @override
+  // void dispose() {
+  //   email.dispose(); // ยกเลิกการใช้งานที่เกี่ยวข้องทั้งหมดถ้ามี
+  //   password.dispose();
+  //   super.dispose();
+  // }
+
+  Future<String> login(String email, String password) async {
+    String url = 'http://10.0.2.2:8000/login';
+    Map<String, String> data = {'email': email, 'password': password};
+    Map<String, String> headers = {'Content-Type': 'application/json'};
+    final response = await http.post(
+      Uri.parse(url),
+      headers: headers,
+      body: jsonEncode(data),
+    );
+
+    if (response.statusCode == 200) {
+      // If the call to the server was successful, parse the JSON.
+      var data = response.body;
+      return data;
+    } else {
+      // If that call was not successful, throw an error.
+      print(response.statusCode);
+      print(response.body);
+      throw Exception('Failed to load data.');
+    }
   }
 
   // List<UserRegisPost>? posts;
@@ -44,12 +69,12 @@ class _LoginScreenState extends State<LoginScreen> {
   // }
 
   // getData() async {
-  //   posts = await RemoteService().postData();
-  //   if (posts != null) {
-  //     setState(() {
-  //       isLoaded = true;
-  //     });
-  //   }
+  // posts = await RemoteService().postData();
+  // if (posts != null) {
+  //   setState(() {
+  //     isLoaded = true;
+  //   });
+  // }
   // }
 
   // @override
@@ -69,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Form(
-              key: _formKey,
+              // key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -102,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 30,
                   ),
                   Container(
-                    height: isEmailCorrect ? 280 : 200,
+                    height: isEmailCorrect ? 280 : 300,
                     // _formKey!.currentState!.validate() ? 200 : 600,
                     // height: isEmailCorrect ? 260 : 182,
                     width: MediaQuery.of(context).size.width / 1.1,
@@ -150,7 +175,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Padding(
                           padding: const EdgeInsets.only(left: 20, right: 20),
                           child: Form(
-                            key: _formKey,
+                            // key: _formKey,
                             child: TextFormField(
                               controller: password,
                               obscuringCharacter: '*',
@@ -188,43 +213,49 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(
                           height: 20,
                         ),
-                        isEmailCorrect
-                            ? ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0)),
-                                    backgroundColor: isEmailCorrect == false
-                                        ? Colors.red
-                                        : Colors.purple,
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 131, vertical: 20)
-                                    // padding: EdgeInsets.only(
-                                    //     left: 120, right: 120, top: 20, bottom: 20),
-                                    ),
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    // If the form is valid, display a snackbar. In the real world,
-                                    // you'd often call a server or save the information in a database.
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text('Processing Data')),
-                                    );
-                                    // String email = email.text;
-                                    // String password = password.text;
-                                    // var result = await UserRegisPost.fromJson(email, password);
-                                  }
+                        Container(
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(10.0)),
+                                  backgroundColor: isEmailCorrect == false
+                                      ? Colors.red
+                                      : Colors.purple,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 131, vertical: 20)
+                                  // padding: EdgeInsets.only(
+                                  //     left: 120, right: 120, top: 20, bottom: 20),
+                                  ),
+                              onPressed: () {
+                                // if (_formKey.currentState!.validate()) {
+                                // If the form is valid, display a snackbar. In the real world,
+                                // you'd often call a server or save the information in a database.
+                                // ScaffoldMessenger.of(context).showSnackBar(
+                                //   const SnackBar(
+                                //       content: Text('Processing Data')),
+                                // );
+                                String email = this.email.text;
+                                String password = this.password.text;
 
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //         builder: (context) => loginScreen()));
-                                },
-                                child: Text(
-                                  'Log In',
-                                  style: TextStyle(fontSize: 17),
-                                ))
-                            : Container(),
+                                print(email);
+                                print(password);
+
+                                // login(email, password);
+                                // var result = await login.fromJson(this.email, this.password);
+                                // login(this.email, this.password);
+                                // }
+
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => NavigaBar()));
+                              },
+                              child: Text(
+                                'Log In',
+                                style: TextStyle(fontSize: 17),
+                              )),
+                        ),
                       ],
                     ),
                   ),

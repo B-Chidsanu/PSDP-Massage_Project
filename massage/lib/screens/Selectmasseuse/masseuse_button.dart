@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:massage/screens/MasseusDetail.dart';
 
 class MasseuseBuuton extends StatelessWidget {
   final Widget screens;
@@ -55,7 +56,7 @@ class MasseuseBuuton extends StatelessWidget {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => screens),
+          MaterialPageRoute(builder: (context) => MasseusDetail()),
         );
       },
     );

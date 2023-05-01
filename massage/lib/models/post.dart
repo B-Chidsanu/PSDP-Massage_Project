@@ -34,6 +34,8 @@ import 'dart:convert';
 //       };
 // }
 
+import 'dart:convert';
+
 List<UserRegisPost> userRegisPostFromJson(String str) =>
     List<UserRegisPost>.from(
         json.decode(str).map((x) => UserRegisPost.fromJson(x)));
