@@ -23,7 +23,7 @@ const conn = mysql2.createConnection({
 // }
 
 app.get('/user', async (req, res) => {
-    let sql = "SELECT * FROM user"
+    let sql = "SELECT * FROM register_user"
     await conn.execute(sql,
         (err, result) => {
             if (err) {
@@ -41,33 +41,12 @@ app.get('/user', async (req, res) => {
         })
 })
 
-// app.post('/user', async (req, res) => {
-//     const { username, password, name, tel, gender, email, address } = req.body
-//     bcrypt.genSalt(saltRound, (err, salt) => {
-//         bcrypt.hash(password, salt, (err, hash) => {
-//             let sql = "INSERT INTO user (username, password, name, tel, gender, email, address) VALUES (?,?,?,?,?,?,?)"
-//             conn.execute(sql,
-//                 [username, hash, name, tel, gender, email, address],
-//                 (err, result) => {
-//                     if (err) {
-//                         res.status(400).json({
-//                             message: err.message
-//                         })
-//                         return
-//                     }
-//                     res.status(200).json({
-//                         message: "Add Data is complet",
-//                         data: result
-//                     })
-//                 })
-//         })
-//     })
-// })
+
 
 //Register
 app.post("/register", async (req, res) => {
-    const { username, password, name, tel, gender, email, address, certificateimg, cardidimg } = req.body;
-    let sql = "SELECT * FROM user WHERE email = ?";
+    const { username, password, name, phone, gender, email, address, role, img1, img2 } = req.body;
+    let sql = "SELECT * FROM register_user WHERE email = ?";
     conn.execute(sql, [email], (err, results) => {
         if (err) {
             return res.status(500).json({
@@ -82,14 +61,12 @@ app.post("/register", async (req, res) => {
         } else {
             bcrypt.genSalt(saltRound, (err, salt) => {
                 bcrypt.hash(password, salt, (err, hash) => {
-                    let values = [username, hash, name, tel, gender, email, address, certificateimg, cardidimg];
+                    let values = [username, hash, name, phone, gender, email, address, role, img1, img2];
 
-                    for (let i = 0; i < values.length; i++) {
-                        if (values[i] === undefined) {
-                            values[i] = null;
-                        }
-                    }
-                    let sql = "INSERT INTO user (username, password, name, tel, gender, email, address, certificateimg, cardidimg) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    // Replace undefined values with null
+                    values = values.map((value) => (typeof value === "undefined" ? null : value));
+
+                    let sql = "INSERT INTO register_user (username, password, name, phone, gender, email, address, role, img1, img2) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
                     conn.execute(sql, values, (err, results) => {
                         if (err) {
                             return res.status(500).json({
@@ -111,12 +88,16 @@ app.post("/register", async (req, res) => {
 
 
 
-
-//Login
+// //Login
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
-    let sql = "SELECT * FROM user WHERE email = ? ";
-    conn.execute(sql, [email], async (err, result) => {
+    if (!email || !password) {
+        return res.status(400).json({
+            message: "Email and password are required."
+        });
+    }
+    let sql = "SELECT * FROM register_user WHERE email = ? ";
+    conn.execute(sql, [email || null], async (err, result) => {
         if (err) {
             res.status(400).json({
                 message: err.message
@@ -130,7 +111,7 @@ app.post('/login', async (req, res) => {
             const hashedPassword = result[0].password;
             bcrypt.compare(password, hashedPassword, (err, result) => {
                 if (result) {
-                    sql = " SELECT * FROM user";
+                    sql = " SELECT * FROM register_user";
                     conn.execute(sql, (err, result) => {
                         if (err) {
                             return res.status(400).json({
@@ -153,6 +134,82 @@ app.post('/login', async (req, res) => {
         }
     })
 });
+
+
+//หน้า Post หมอนวด
+app.put("/post_provider/:id", async (req, res) => {
+    const { id } = req.params;
+    const {
+        detail,
+        price,
+    } = req.body;
+
+    let sql =
+        "UPDATE  register_user SET  detail = ?, price = ? WHERE id = ?";
+    conn.execute(
+        sql,
+        [
+            detail,
+            price,
+            id
+        ],
+        (err, results) => {
+            if (err) {
+                res.status(500).json({
+                    status: false,
+                    message: err.message,
+                });
+                return
+            } else {
+                res.status(200).json({
+                    status: true,
+                    message: "Success",
+                    data: results,
+                });
+            }
+        }
+    );
+});
+
+//หน้าเลือกหมอนวดที่ออนไลน์
+app.get('/select_provider', async (req, res) => {
+
+    let sql = "SELECT register_user id, name, price, detail FROM  WHERE role = 'provider' AND status = 'online'";
+
+    await conn.execute(sql,
+        (err, result) => {
+            if (err) {
+                res.status(500).json({
+                    message: err.message
+                })
+                return
+            }
+            res.status(200).json({
+                message: "เรียกข้อมูลสำเร็จ",
+                data: result
+            })
+        })
+})
+
+//หน้าจองหมอนวด
+app.get('/reserve_provider/:id', async (req, res) => {
+    const { id } = req.params
+    let sql = "SELECT name, detail FROM  WHERE id = ?"
+    await conn.execute(sql,
+        [id],
+        (err, result) => {
+            if (err) {
+                res.status(500).json({
+                    message: err.message
+                })
+                return
+            }
+            res.status(200).json({
+                message: "เรียกข้อมูลสำเร็จ",
+                data: result
+            })
+        })
+})
 
 
 app.listen(port, () => {

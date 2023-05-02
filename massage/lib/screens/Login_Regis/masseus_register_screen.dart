@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -12,6 +13,8 @@ import 'package:massage/screens/Login_Regis/InputBox/button.dart';
 
 import 'package:massage/screens/Login_Regis/login_screen.dart';
 
+import 'package:http/http.dart' as http;
+
 import 'package:http/http.dart';
 
 enum ProductTypeEnum { Male, Female }
@@ -24,20 +27,112 @@ class MasseusregisScreen extends StatefulWidget {
 }
 
 class _MasseusregisScreenState extends State<MasseusregisScreen> {
-  TextEditingController username = TextEditingController();
-  TextEditingController password = TextEditingController();
-  TextEditingController name = TextEditingController();
-  TextEditingController phone = TextEditingController();
-  // MenuController gender = MenuController();
-  TextEditingController email = TextEditingController();
-  TextEditingController address = TextEditingController();
+  @override
+  final _formKey = GlobalKey<FormState>();
+  final _username = TextEditingController();
+  final _password = TextEditingController();
+  final _name = TextEditingController();
+  final _phone = TextEditingController();
+  final _gender = TextEditingController();
+  final _email = TextEditingController();
+  final _address = TextEditingController();
+  // final image = ImagePicker();
+  // final _img2 = ImagePicker();
+
+  bool _isLoading = false;
+
+  Future<void> _MasseusRegiser() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+      // var stream = new http.ByteStream(image!.openRead());
+      // stream.cast();
+      // var length = await image!.length();
+      // var multiport = new http.MultipartFile('image', stream, length);
+    }
+
+    try {
+      final response = await http.post(
+        Uri.parse('http://localhost:3000/register'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'username': _username.text,
+          'password': _password.text,
+          'name': _name.text,
+          'phone': _phone.text,
+          'gender': _gender.text,
+          'email': _email.text,
+          'address': _address.text,
+          // 'img1': image,
+          // 'img2': _img2,
+        }),
+      );
+      Map<String, dynamic> jsonMap = json.decode(response.body);
+
+      if (jsonMap['status'] == 'True') {
+        print(jsonMap['status']);
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Signup Success'),
+              content: Text('Add Success'),
+              actions: [
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ],
+            );
+          },
+        );
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => LoginScreen()));
+      } else {
+        // print("55555" + jsonMap['status']);
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Signup Failed'),
+              content: Text('!!Check Your E-mail'),
+              actions: [
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ],
+            );
+          },
+        );
+        setState(() {
+          print('Login failed: ${response.body}');
+          print('Email or password is incorrect');
+          _isLoading = false;
+        });
+      }
+    } catch (error) {
+      setState(() {
+        // _errorMessage = 'Email or password is incorrect';
+        _isLoading = false;
+      });
+      // Something went wrong, show error message
+      print('Error: $error');
+    }
+  }
 
   File? image;
   File? image1;
 
   Future pickImage(ImageSource source) async {
     try {
-      final image = await ImagePicker().pickImage(source: source);
+      final image =
+          await ImagePicker().pickImage(source: source, imageQuality: 80);
       if (image == null) return;
       final imageTamporary = File(image.path);
       setState(() => this.image = imageTamporary);
@@ -48,7 +143,8 @@ class _MasseusregisScreenState extends State<MasseusregisScreen> {
 
   Future pickImage1(ImageSource source) async {
     try {
-      final image1 = await ImagePicker().pickImage(source: source);
+      final image1 =
+          await ImagePicker().pickImage(source: source, imageQuality: 80);
       if (image1 == null) return;
       final imageTamporary = File(image1.path);
       setState(() => this.image1 = imageTamporary);
@@ -59,157 +155,203 @@ class _MasseusregisScreenState extends State<MasseusregisScreen> {
 
   ProductTypeEnum? _productTypeEnum;
 
-  // Profile profile = Profile();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 0, 168, 120),
       body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                    width: 180, height: 170, "assets/images/massage_logo.png"),
-                Text(
-                  'Register',
-                  style: GoogleFonts.chakraPetch(
-                      textStyle: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 40,
-                  )),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width / 1.1,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.3),
-                    borderRadius: BorderRadius.circular(20),
+        child: Form(
+          key: _formKey,
+          child: Center(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                      width: 180,
+                      height: 170,
+                      "assets/images/massage_logo.png"),
+                  Text(
+                    'Register',
+                    style: GoogleFonts.chakraPetch(
+                        textStyle: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 40,
+                    )),
                   ),
-                  child: Column(children: [
-                    InputBox('Username', 'Enter Your Username', Icons.person,
-                        Colors.purple, username),
-                    InputBox('Password', 'Enter Your Password', Icons.key,
-                        Colors.purple, password),
-                    InputBox('Name', 'Enter Your Name', Icons.person,
-                        Colors.purple, name),
-                    InputBox('Phone', 'Enter Your Phone number', Icons.phone,
-                        Colors.purple, email),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: RadioListTile<ProductTypeEnum>(
-                              value: ProductTypeEnum.Male,
-                              groupValue: _productTypeEnum,
-                              activeColor: Color.fromARGB(255, 197, 90, 216),
-                              contentPadding: EdgeInsets.all(0.0),
-                              // tileColor: Colors.white,
-                              title: Text(
-                                ProductTypeEnum.Male.name,
-                                style: TextStyle(color: Colors.purple),
-                              ),
-                              onChanged: (val) {
-                                setState(() {
-                                  _productTypeEnum = val;
-                                });
-                              }),
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Expanded(
-                          child: RadioListTile<ProductTypeEnum>(
-                              value: ProductTypeEnum.Female,
-                              groupValue: _productTypeEnum,
-                              activeColor: Color.fromARGB(255, 197, 90, 216),
-                              contentPadding: EdgeInsets.all(0.0),
-                              // tileColor: Colors.white,
-                              title: Text(ProductTypeEnum.Female.name,
-                                  style: TextStyle(color: Colors.purple)),
-                              onChanged: (val) {
-                                setState(() {
-                                  _productTypeEnum = val;
-                                });
-                              }),
-                        ),
-                      ],
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width / 1.1,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    // InputBox('E-mail', 'Enter Your E-mail', Icons.email,
-                    //     Colors.purple),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 20, right: 20, bottom: 20),
-                      child: TextFormField(
-                        controller: address,
-                        keyboardType: TextInputType.multiline,
-                        maxLines: 4,
-                        maxLength: 200,
-                        decoration: const InputDecoration(
-                            hintText: "Write Your Address",
-                            focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    width: 1, color: Colors.redAccent)),
-                            filled: true,
-                            fillColor: Colors.white),
+                    child: Column(children: [
+                      InputBox('Username', 'Enter Your Username', Icons.person,
+                          Colors.purple, _username),
+                      InputBox('Password', 'Enter Your Password', Icons.key,
+                          Colors.purple, _password),
+                      InputBox('Name', 'Enter Your Name', Icons.person,
+                          Colors.purple, _name),
+                      InputBox('Phone', 'Enter Your Phone number', Icons.phone,
+                          Colors.purple, _email),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: RadioListTile<ProductTypeEnum>(
+                                value: ProductTypeEnum.Male,
+                                groupValue: _productTypeEnum,
+                                activeColor: Color.fromARGB(255, 197, 90, 216),
+                                contentPadding: EdgeInsets.all(0.0),
+                                // tileColor: Colors.white,
+                                title: Text(
+                                  ProductTypeEnum.Male.name,
+                                  style: TextStyle(color: Colors.purple),
+                                ),
+                                onChanged: (val) {
+                                  setState(() {
+                                    _productTypeEnum = val;
+                                  });
+                                }),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Expanded(
+                            child: RadioListTile<ProductTypeEnum>(
+                                value: ProductTypeEnum.Female,
+                                groupValue: _productTypeEnum,
+                                activeColor: Color.fromARGB(255, 197, 90, 216),
+                                contentPadding: EdgeInsets.all(0.0),
+                                // tileColor: Colors.white,
+                                title: Text(ProductTypeEnum.Female.name,
+                                    style: TextStyle(color: Colors.purple)),
+                                onChanged: (val) {
+                                  setState(() {
+                                    _productTypeEnum = val;
+                                  });
+                                }),
+                          ),
+                        ],
                       ),
-                    ),
-                    image != null
-                        ? Image.file(
-                            image!,
-                            width: 150,
-                            height: 150,
-                            fit: BoxFit.cover,
-                          )
-                        : Image.network(
-                            'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
-                            width: 150,
-                            height: 150,
-                            fit: BoxFit.fill,
+                      SizedBox(
+                        width: 5,
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 20, right: 20, bottom: 20),
+                        child: TextFormField(
+                          validator: (val) {
+                            if (val!.isEmpty) {
+                              return 'Empty';
+                            }
+                            return null;
+                          },
+                          controller: _address,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: 4,
+                          maxLength: 200,
+                          decoration: const InputDecoration(
+                              hintText: "Write Your Address",
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 1, color: Colors.white)),
+                              filled: true,
+                              fillColor: Colors.white),
+                        ),
+                      ),
+
+                      image != null
+                          ? Image.file(
+                              image!,
+                              width: 150,
+                              height: 150,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.network(
+                              'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+                              width: 150,
+                              height: 150,
+                              fit: BoxFit.fill,
+                            ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      CertiButton(
+                          title: 'Certificate',
+                          icon: Icons.image_outlined,
+                          onClick: () => pickImage(ImageSource.gallery)),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      //PickImage ID-Card
+                      image1 != null
+                          ? Image.file(
+                              image1!,
+                              width: 300,
+                              height: 150,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.network(
+                              'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+                              width: 300,
+                              height: 150,
+                              fit: BoxFit.fill,
+                            ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      CertiButton(
+                          title: 'ID-Card',
+                          icon: Icons.image_outlined,
+                          onClick: () => pickImage1(ImageSource.gallery)),
+                      SizedBox(
+                        height: 20,
+                      ),
+
+                      Row(
+                        children: [
+                          Expanded(
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(100),
+                                  ),
+                                ),
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Colors.blueAccent),
+                                padding: MaterialStateProperty.all<
+                                    EdgeInsetsGeometry>(
+                                  EdgeInsets.symmetric(
+                                    horizontal:
+                                        MediaQuery.of(context).size.width / 10,
+                                    vertical: 10,
+                                  ),
+                                ),
+                              ),
+                              onPressed: () {
+                                _MasseusRegiser();
+                              },
+                              child: Text('OK'),
+                            ),
                           ),
-                    CertiButton(
-                        title: 'Certificate',
-                        icon: Icons.image_outlined,
-                        onClick: () => pickImage(ImageSource.gallery)),
-                    //PickImage ID-Card
-                    image1 != null
-                        ? Image.file(
-                            image1!,
-                            width: 300,
-                            height: 150,
-                            fit: BoxFit.cover,
-                          )
-                        : Image.network(
-                            'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
-                            width: 300,
-                            height: 150,
-                            fit: BoxFit.fill,
-                          ),
-                    CertiButton(
-                        title: 'ID-Card',
-                        icon: Icons.image_outlined,
-                        onClick: () => pickImage1(ImageSource.gallery)),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: InputButton(
-                                LoginScreen(), Colors.blueAccent, 'OK')),
-                        Expanded(
-                            child: InputButton(
-                                LoginScreen(), Colors.redAccent, 'cencel'))
-                      ],
-                    )
-                  ]),
-                ),
-              ],
+                          Expanded(
+                              child: InputButton(
+                                  LoginScreen(), Colors.redAccent, 'cencel'))
+                        ],
+                      )
+                    ]),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

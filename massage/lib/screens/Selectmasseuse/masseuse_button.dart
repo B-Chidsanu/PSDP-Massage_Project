@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:massage/screens/MasseusDetail.dart';
+import 'package:massage/screens/Masseus/MasseusDetail.dart';
 
 class MasseuseBuuton extends StatelessWidget {
   final Widget screens;

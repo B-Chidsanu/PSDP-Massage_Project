@@ -20,7 +20,8 @@ class _SelectMasseuseState extends State<SelectMasseuse> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(''),
+        backgroundColor: Color.fromARGB(255, 2, 102, 74),
+        title: const Text('Select Masseuse'),
       ),
       backgroundColor: Color.fromARGB(255, 0, 168, 120),
       body: SafeArea(
@@ -74,6 +75,7 @@ class _SelectMasseuseState extends State<SelectMasseuse> {
         ),
       )),
     );
+
     //   BookingScreen()
     // ][1];
   }

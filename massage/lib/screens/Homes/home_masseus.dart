@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:massage/screens/BookingScreen.dart';
+import 'package:massage/screens/Masseus/MasseusDetail.dart';
 import 'package:massage/screens/Navigators/navigationbar.dart';
 import 'package:massage/screens/Search_bar.dart';
+import 'package:massage/screens/Selectmasseuse/select_masseuse.dart';
 
 class HomeMasseus extends StatefulWidget {
   const HomeMasseus({super.key});
@@ -17,6 +19,9 @@ class _HomemasseusState extends State<HomeMasseus> {
   Widget build(BuildContext context) {
     return [
       Scaffold(
+        appBar: AppBar(
+          title: const Text('BOOKING'),
+        ),
         backgroundColor: Color.fromARGB(255, 0, 168, 120),
         body: SafeArea(
             child: Center(
@@ -36,7 +41,7 @@ class _HomemasseusState extends State<HomeMasseus> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => BookingScreen()));
+                              builder: (context) => SelectMasseuse()));
                     },
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -53,7 +58,7 @@ class _HomemasseusState extends State<HomeMasseus> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => BookingScreen()));
+                              builder: (context) => SelectMasseuse()));
                     },
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -69,7 +74,7 @@ class _HomemasseusState extends State<HomeMasseus> {
           ),
         )),
       ),
-      BookingScreen()
+      BookingScreen(),
     ][1];
   }
 }

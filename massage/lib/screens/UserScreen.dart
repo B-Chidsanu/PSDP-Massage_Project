@@ -3,7 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:massage/screens/Items/popupbutton.dart';
 import 'package:massage/screens/Login_Regis/login_screen.dart';
-import 'package:massage/screens/Selectmasseuse/ButtonMasseus/button_masseus.dart';
+import 'package:massage/screens/Masseus/ButtonMasseus/button_masseus.dart';
 
 class UserScreen extends StatefulWidget {
   const UserScreen({super.key});
@@ -23,7 +23,7 @@ class _UserScreenState extends State<UserScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 140, vertical: 10),
+                padding: EdgeInsets.symmetric(horizontal: 170, vertical: 10),
                 height: 200,
                 width: double.infinity,
                 decoration: BoxDecoration(
@@ -37,7 +37,7 @@ class _UserScreenState extends State<UserScreen> {
                 ),
                 child: Column(
                   children: [
-                    MyPopupButton(),
+                    // MyPopupButton(),
                     Image.asset(
                       'assets/images/user.png',
                       fit: BoxFit.contain,
@@ -77,30 +77,28 @@ class _UserScreenState extends State<UserScreen> {
                           children: [
                             ButtonMasseus(
                               Icons.location_on,
-                              'My Address                 >',
+                              'My Address               >',
                               UserScreen(),
                             ),
                             Underline(),
                             ButtonMasseus(
                               Icons.group,
-                              'Account                       >',
+                              'Account                     >',
                               UserScreen(),
                             ),
                             Underline(),
                             ButtonMasseus(Icons.notifications,
-                                'Notifications               >', UserScreen()),
+                                'Notifications              >', UserScreen()),
                             Underline(),
-                            ButtonMasseus(
-                                Icons.edit_square,
-                                'Edit Profile                  >',
-                                UserScreen()),
+                            ButtonMasseus(Icons.edit_square,
+                                'Edit Profile                 >', UserScreen()),
                             Underline(),
                             ButtonMasseus(Icons.error,
-                                'About Me                    >', UserScreen()),
+                                'About Me                  >', UserScreen()),
                             Underline(),
                             ButtonMasseus(
                                 Icons.error,
-                                'Logout                         >',
+                                'Logout                       >',
                                 LoginScreen()),
                           ]),
                     )
@@ -111,17 +109,6 @@ class _UserScreenState extends State<UserScreen> {
           ),
         ),
       ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   type: BottomNavigationBarType.fixed,
-      //   items: [
-      //     BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-      //     BottomNavigationBarItem(
-      //         icon: Icon(Icons.calendar_month), label: 'Booking'),
-      //     BottomNavigationBarItem(
-      //         icon: Icon(Icons.notifications), label: 'Notification'),
-      //     BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Me'),
-      //   ],
-      // ),
     );
   }
 }

@@ -14,22 +14,6 @@ class MasseusDetail extends StatefulWidget {
 }
 
 class _MasseusDetailState extends State<MasseusDetail> {
-  int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    const HomeScreen(),
-    const BookingScreen(),
-    const NotificationScreen(),
-    const UserScreen(),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -152,4 +136,3 @@ class _MasseusDetailState extends State<MasseusDetail> {
     );
   }
 }
-

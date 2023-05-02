@@ -7,16 +7,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
-import 'package:massage/models/post.dart';
 import 'package:massage/screens/Login_Regis/InputBox/inputbox.dart';
 import 'package:massage/screens/Login_Regis/InputBox/button.dart';
 import 'package:massage/screens/Login_Regis/login_screen.dart';
-import 'package:massage/services/remote_service.dart';
 import 'package:http/http.dart' as http;
 
 // enum ProductTypeEnum { Male, Female }
+// enum Gender { Male, Female }
 
 class UserRegister extends StatefulWidget {
   const UserRegister({super.key});
@@ -27,77 +25,99 @@ class UserRegister extends StatefulWidget {
 
 class _UserRegisterState extends State<UserRegister> {
   @override
-  final formkey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
+  final _username = TextEditingController();
+  final _password = TextEditingController();
+  final _name = TextEditingController();
+  final _phone = TextEditingController();
+  final _gender = TextEditingController();
+  final _email = TextEditingController();
+  final _address = TextEditingController();
 
-  TextEditingController username = TextEditingController();
-  TextEditingController password = TextEditingController();
-  TextEditingController name = TextEditingController();
-  TextEditingController phone = TextEditingController();
-  TextEditingController gender = TextEditingController();
-  TextEditingController email = TextEditingController();
-  TextEditingController address = TextEditingController();
+  bool _isLoading = false;
 
-  // Future register() async {
-  //   String url = "http://127.0.0.1:8000/users/";
-  //   final respons = await http.post(Uri.parse(url), body: {
-  //     'username': username.text,
-  //     'password': password.text,
-  //     'name': name.text,
-  //     'phone': phone.text,
-  //     'gender': _selectedGender,
-  //     'email': email.text,
-  //     'address': address.text,
-  //   });
-  //   var data = json.decode(respons.body);
-  //   if (data == "Error") {
-  //     Navigator.pushNamed(context, 'UserRegister');
-  //   } else {
-  //     Navigator.pushNamed(context, 'HomeScreen');
-  //   }
-  // }
+  Future<void> _userRegiser() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+    }
+
+    try {
+      final response = await http.post(
+        Uri.parse('http://localhost:3000/register'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'username': _username.text,
+          'password': _password.text,
+          'name': _name.text,
+          'phone': _phone.text,
+          'gender': _gender.text,
+          'email': _email.text,
+          'address': _address.text,
+        }),
+      );
+      Map<String, dynamic> jsonMap = json.decode(response.body);
+
+      if (jsonMap['status'] == 'True') {
+        print(jsonMap['status']);
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Signup Success'),
+              content: Text('Add Success'),
+              actions: [
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ],
+            );
+          },
+        );
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => LoginScreen()));
+      } else {
+        // print("55555" + jsonMap['status']);
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Signup Failed'),
+              content: Text('!!Check Your E-mail'),
+              actions: [
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ],
+            );
+          },
+        );
+        setState(() {
+          print('Login failed: ${response.body}');
+          print('Email or password is incorrect');
+          _isLoading = false;
+        });
+      }
+    } catch (error) {
+      setState(() {
+        // _errorMessage = 'Email or password is incorrect';
+        _isLoading = false;
+      });
+      // Something went wrong, show error message
+      print('Error: $error');
+    }
+  }
 
   bool _registeringStatus = false;
 
-  @override
-  void dispose() {
-    username.dispose();
-    password.dispose();
-    name.dispose();
-    phone.dispose();
-    gender.dispose();
-    email.dispose();
-    super.dispose();
-  }
-
-  // List<UserRegisPost>? posts;
-  // var isLoaded = false;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   postData();
-  // }
-
-  // postData() async {
-  //   posts = await RemoteService().post();
-  //   if (posts != null) {
-  //     setState(() {
-  //       isLoaded = true;
-  //     });
-  //   }
-  // }
-
-  String _selectedGender = 'male';
-
-  // @override
-  // Void initState() {
-  //   super.initState();
-  //   getName();
-  // }
-
-  // void getName() {
-  //   print('ดึงชื่อ');
-  // }
+  // Gender? _Gender = Gender.Male;
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +125,7 @@ class _UserRegisterState extends State<UserRegister> {
       backgroundColor: Color.fromARGB(255, 0, 168, 120),
       body: SafeArea(
         child: Form(
-          key: formkey,
+          key: _formKey,
           child: Center(
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
@@ -136,61 +156,69 @@ class _UserRegisterState extends State<UserRegister> {
                     ),
                     child: Column(children: [
                       InputBox('Username', 'Enter Your Username', Icons.person,
-                          Colors.purple, username),
+                          Colors.purple, _username),
                       InputBox('Password', 'Enter Your Password', Icons.key,
-                          Colors.purple, password),
+                          Colors.purple, _password),
                       InputBox('Name', 'Enter Your Name', Icons.person,
-                          Colors.purple, name),
+                          Colors.purple, _name),
                       InputBox('Phone', 'Enter Your Phone number', Icons.phone,
-                          Colors.purple, phone),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: RadioListTile(
-                                value: 'Male',
-                                groupValue: _selectedGender,
-                                activeColor: Color.fromARGB(255, 197, 90, 216),
-                                contentPadding: EdgeInsets.all(0.0),
-                                title: Text(
-                                  'Male',
-                                  style: TextStyle(color: Colors.purple),
-                                ),
-                                onChanged: (val) {
-                                  setState(() {
-                                    _selectedGender = val!;
-                                  });
-                                }),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Expanded(
-                            child: RadioListTile(
-                                value: 'Female',
-                                groupValue: _selectedGender,
-                                activeColor: Color.fromARGB(255, 197, 90, 216),
-                                contentPadding: EdgeInsets.all(0.0),
-                                // tileColor: Colors.white,
-                                title: Text('Female',
-                                    style: TextStyle(color: Colors.purple)),
-                                onChanged: (val) {
-                                  setState(() {
-                                    _selectedGender = val!;
-                                  });
-                                }),
-                          ),
-                        ],
-                      ),
+                          Colors.purple, _phone),
+                      InputBox('Gender', 'Gender', Icons.male, Colors.purple,
+                          _gender),
+                      // Row(
+                      //   children: [
+                      //     Expanded(
+                      //       child: RadioListTile<Gender>(
+                      //           value: Gender.Male,
+                      //           groupValue: _Gender,
+                      //           activeColor: Color.fromARGB(255, 197, 90, 216),
+                      //           contentPadding: EdgeInsets.all(0.0),
+                      //           title: Text(
+                      //             'Male',
+                      //             style: TextStyle(color: Colors.purple),
+                      //           ),
+                      //           onChanged: (Gender? val) {
+                      //             setState(() {
+                      //               _Gender = val!;
+                      //             });
+                      //           }),
+                      //     ),
+                      //     SizedBox(
+                      //       width: 5,
+                      //     ),
+                      //     Expanded(
+                      //       child: RadioListTile<Gender>(
+                      //           value: Gender.Female,
+                      //           groupValue: _Gender,
+                      //           activeColor: Color.fromARGB(255, 197, 90, 216),
+                      //           contentPadding: EdgeInsets.all(0.0),
+                      //           // tileColor: Colors.white,
+                      //           title: Text('Female',
+                      //               style: TextStyle(color: Colors.purple)),
+                      //           onChanged: (Gender? val) {
+                      //             setState(() {
+                      //               _Gender = val!;
+                      //             });
+                      //           }),
+                      //     ),
+                      //   ],
+                      // ),
                       SizedBox(
                         width: 5,
                       ),
                       InputBox('E-mail', 'Enter Your E-mail', Icons.email,
-                          Colors.purple, email),
+                          Colors.purple, _email),
                       Padding(
                         padding: const EdgeInsets.only(
                             left: 20, right: 20, bottom: 20),
                         child: TextFormField(
-                          controller: address,
+                          validator: (val) {
+                            if (val!.isEmpty) {
+                              return 'Empty';
+                            }
+                            return null;
+                          },
+                          controller: _address,
                           keyboardType: TextInputType.multiline,
                           maxLines: 4,
                           maxLength: 200,
@@ -227,18 +255,7 @@ class _UserRegisterState extends State<UserRegister> {
                                 ),
                               ),
                               onPressed: () {
-                                bool password =
-                                    formkey.currentState!.validate();
-                                if (password) {
-                                  UserRegister();
-                                } else {
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => LoginScreen(),
-                                          settings:
-                                              RouteSettings(arguments: Null)));
-                                }
+                                _userRegiser();
                               },
                               child: Text('OK'),
                             ),
