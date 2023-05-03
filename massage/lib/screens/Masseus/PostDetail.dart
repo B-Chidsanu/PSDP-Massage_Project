@@ -3,8 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:massage/screens/Homes/home_screen.dart';
+
+import 'package:massage/globals.dart' as globals;
 import 'package:http/http.dart' as http;
+import 'package:massage/screens/Masseus/MasseusEdit.dart';
+import 'package:massage/screens/Navigators/provider_navigation_bar.dart';
 
 class PostDetail extends StatefulWidget {
   const PostDetail({super.key});
@@ -14,96 +17,41 @@ class PostDetail extends StatefulWidget {
 }
 
 class _PostDetailState extends State<PostDetail> {
-  bool isSwitched = false;
   final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
   final _price = TextEditingController();
   final _detail = TextEditingController();
-
-  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
+    getNameProvider();
+    putProviderEdit();
+  }
 
+  Map<String, dynamic> jsonMap = {};
+  @override
+  Future<void> getNameProvider() async {
+    final response = await http.get(
+      Uri.parse('http://localhost:3000/home_provider_edit/${globals.user_id}'),
+      headers: {'Content-Type': 'application/json'},
+    );
     setState(() {
-      _price.text = 'John Doe';
-      _detail.text = '123-456-7890';
+      jsonMap = json.decode(response.body);
     });
   }
 
-  Future<void> _EditDetail() async {
-    if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isLoading = true;
-      });
-    }
-
-    try {
-      final response = await http.put(
-        Uri.parse('http://localhost:3000/post_provider/:id'),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode({
-          'id': '10',
-          'detail': _detail.text,
-          'price': _price.text,
-        }),
-      );
-      Map<String, dynamic> jsonMap = json.decode(response.body);
-      if (jsonMap['status'] == true) {
-        print(jsonMap['status']);
-        print('Check: ${response.body}');
-        // showDialog(
-        //   context: context,
-        //   builder: (BuildContext context) {
-        //     return AlertDialog(
-        //       title: Text('Signup Success'),
-        //       content: Text('Add Success'),
-        //       actions: [
-        //         TextButton(
-        //           child: Text('OK'),
-        //           onPressed: () => Navigator.of(context).pop(),
-        //         ),
-        //       ],
-        //     );
-        //   },
-        // );
-        // Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //         builder: (BuildContext context) => LoginScreen()));
-      } else {
-        // print("55555" + jsonMap['status']);
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Signup Failed'),
-              content: Text('!!Check Your E-mail'),
-              actions: [
-                TextButton(
-                  child: Text('OK'),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-              ],
-            );
-          },
-        );
-        setState(() {
-          print('Login failed: ${response.body}');
-          print('Email or password is incorrect');
-          _isLoading = false;
-        });
-      }
-    } catch (error) {
-      setState(() {
-        // _errorMessage = 'Email or password is incorrect';
-        _isLoading = false;
-      });
-      // Something went wrong, show error message
-      print('Error: $error');
-    }
+  @override
+  Future<void> putProviderEdit() async {
+    final response = await http.put(
+      Uri.parse('http://localhost:3000/edit_post_provider/${globals.user_id}'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'price': _price.text,
+        'detail': _detail.text,
+        'id': globals.user_id,
+      }),
+    );
   }
 
   @override
@@ -125,9 +73,12 @@ class _PostDetailState extends State<PostDetail> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  SizedBox(
+                    height: 50,
+                  ),
                   Text(
-                    "ป้าศรี",
-                    style: TextStyle(fontSize: 30, color: Colors.white),
+                    jsonMap['data']?[0]?['name'] ?? '',
+                    style: TextStyle(fontSize: 40, color: Colors.white),
                   ),
                   SizedBox(
                     height: 20,
@@ -195,7 +146,12 @@ class _PostDetailState extends State<PostDetail> {
                           ),
                           ElevatedButton.icon(
                             onPressed: () {
-                              _EditDetail();
+                              putProviderEdit();
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          NavigaBarProvider()));
                             },
                             style: ElevatedButton.styleFrom(
                               fixedSize: Size(120, 50),

@@ -3,7 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:massage/screens/BookingScreen.dart';
 import 'package:massage/screens/Masseus/MasseusDetail.dart';
-import 'package:massage/screens/Navigators/navigationbar.dart';
+import 'package:massage/screens/Navigators/user_navigation_bar.dart';
 import 'package:massage/screens/Search_bar.dart';
 import 'package:massage/screens/Selectmasseuse/select_masseuse.dart';
 

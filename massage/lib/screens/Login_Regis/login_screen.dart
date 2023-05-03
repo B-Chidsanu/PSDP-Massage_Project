@@ -3,9 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
-import 'package:massage/screens/Homes/home_screen.dart';
+import 'package:massage/screens/Account/account_screen.dart';
+import 'package:massage/screens/Navigators/user_navigation_bar.dart';
 import 'package:massage/screens/Login_Regis/register_status.dart';
-import 'package:massage/screens/Navigators/navigationbar.dart';
+import 'package:massage/screens/Navigators/provider_navigation_bar.dart';
+import 'package:massage/screens/Navigators/user_navigation_bar.dart';
+import 'package:massage/globals.dart' as globals;
 // import 'package:validators/validators.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -18,7 +21,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _email = TextEditingController();
   final _password = TextEditingController();
-  // final _role = TextEditingController();
+  final _role = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -42,19 +45,55 @@ class _LoginScreenState extends State<LoginScreen> {
         body: jsonEncode({
           'email': _email.text,
           'password': _password.text,
-          // 'role': _role.text,
         }),
       );
       Map<String, dynamic> jsonMap = json.decode(response.body);
 
       if (jsonMap['status'] == 'True') {
-        print(jsonMap['status']);
-        // print('Login successful: ${response.body}');
-        // print('Login successful!');
-        Navigator.push(context,
-            MaterialPageRoute(builder: (BuildContext context) => NavigaBar()));
+        globals.user_id = jsonMap['id'];
+
+        if (jsonMap['role'] == 'Provider') {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Provider Login'),
+                content: Text('Login Success'),
+                actions: [
+                  TextButton(
+                      child: Text('OK'),
+                      onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  NavigaBarProvider()))),
+                ],
+              );
+            },
+          );
+        } else if (jsonMap['role'] == 'User') {
+          //globals.user_id = jsonMap['id'];
+          //print(globals.user_id);
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('User Login'),
+                content: Text('Login Success'),
+                actions: [
+                  TextButton(
+                      child: Text('OK'),
+                      onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  NavigaBarUser()))),
+                ],
+              );
+            },
+          );
+        }
       } else {
-        // print("55555" + jsonMap['status']);
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -169,7 +208,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             padding: const EdgeInsets.only(left: 20, right: 20),
                             child: TextFormField(
                               controller: _password,
-                              // obscuringCharacter: '*',
+                              obscuringCharacter: '*',
                               obscureText: true,
                               decoration: const InputDecoration(
                                 focusedBorder: UnderlineInputBorder(

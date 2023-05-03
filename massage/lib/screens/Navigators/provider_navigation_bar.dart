@@ -1,25 +1,27 @@
+//import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:massage/screens/BookingScreen.dart';
-import 'package:massage/screens/Homes/home_screen.dart';
-import 'package:massage/screens/NotificationScreen.dart';
-import 'package:massage/screens/UserScreen.dart';
 
-class NavigaBar extends StatefulWidget {
-  const NavigaBar({super.key});
+import 'package:massage/screens/Masseus/MasseusEdit.dart';
+import 'package:massage/screens/Masseus/Provider_Booking.dart';
+import 'package:massage/screens/NotificationScreen.dart';
+import 'package:massage/screens/Account/UserScreen.dart';
+
+class NavigaBarProvider extends StatefulWidget {
+  const NavigaBarProvider({super.key});
 
   @override
-  State<NavigaBar> createState() => _NavigaBarState();
+  State<NavigaBarProvider> createState() => _NavigaBarProviderState();
 }
 
-class _NavigaBarState extends State<NavigaBar> {
+class _NavigaBarProviderState extends State<NavigaBarProvider> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
-    const HomeScreen(),
-    const BookingScreen(),
+    const MasseusEdit(),
+    const ProviderBooking(),
     const NotificationScreen(),
     const UserScreen(),
   ];

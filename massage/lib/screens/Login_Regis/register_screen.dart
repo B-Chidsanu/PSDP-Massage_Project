@@ -15,18 +15,18 @@ import 'package:massage/screens/Login_Regis/login_screen.dart';
 
 import 'package:http/http.dart' as http;
 
-import 'package:http/http.dart';
+import 'package:massage/screens/Login_Regis/register_status.dart';
 
-enum ProductTypeEnum { Male, Female }
+// enum ProductTypeEnum { Male, Female }
 
-class MasseusregisScreen extends StatefulWidget {
-  const MasseusregisScreen({super.key});
+class register extends StatefulWidget {
+  const register({super.key});
 
   @override
-  State<MasseusregisScreen> createState() => _MasseusregisScreenState();
+  State<register> createState() => _registerState();
 }
 
-class _MasseusregisScreenState extends State<MasseusregisScreen> {
+class _registerState extends State<register> {
   @override
   final _formKey = GlobalKey<FormState>();
   final _username = TextEditingController();
@@ -36,8 +36,6 @@ class _MasseusregisScreenState extends State<MasseusregisScreen> {
   final _gender = TextEditingController();
   final _email = TextEditingController();
   final _address = TextEditingController();
-  // final image = ImagePicker();
-  // final _img2 = ImagePicker();
 
   bool _isLoading = false;
 
@@ -66,6 +64,7 @@ class _MasseusregisScreenState extends State<MasseusregisScreen> {
           'gender': _gender.text,
           'email': _email.text,
           'address': _address.text,
+          'role': 'Provider'
           // 'img1': image,
           // 'img2': _img2,
         }),
@@ -89,6 +88,7 @@ class _MasseusregisScreenState extends State<MasseusregisScreen> {
             );
           },
         );
+        //String email;
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -153,7 +153,7 @@ class _MasseusregisScreenState extends State<MasseusregisScreen> {
     }
   }
 
-  ProductTypeEnum? _productTypeEnum;
+  // ProductTypeEnum? _productTypeEnum;
 
   @override
   Widget build(BuildContext context) {
@@ -193,53 +193,50 @@ class _MasseusregisScreenState extends State<MasseusregisScreen> {
                     child: Column(children: [
                       InputBox('Username', 'Enter Your Username', Icons.person,
                           Colors.purple, _username),
-                      InputBox('Password', 'Enter Your Password', Icons.key,
-                          Colors.purple, _password),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 10),
+                        child: TextFormField(
+                          validator: (val) {
+                            if (val!.isEmpty) {
+                              return 'Empty';
+                            }
+                            return null;
+                          },
+                          controller: _password,
+                          obscuringCharacter: '*',
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            focusedBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20)),
+                            ),
+                            enabledBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20)),
+                            ),
+                            prefixIcon: Icon(Icons.key, color: Colors.purple),
+                            filled: true,
+                            fillColor: Colors.white,
+                            labelText: 'Password',
+                            hintText: '*********',
+                            labelStyle: const TextStyle(color: Colors.purple),
+                          ),
+                        ),
+                      ),
                       InputBox('Name', 'Enter Your Name', Icons.person,
                           Colors.purple, _name),
                       InputBox('Phone', 'Enter Your Phone number', Icons.phone,
-                          Colors.purple, _email),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: RadioListTile<ProductTypeEnum>(
-                                value: ProductTypeEnum.Male,
-                                groupValue: _productTypeEnum,
-                                activeColor: Color.fromARGB(255, 197, 90, 216),
-                                contentPadding: EdgeInsets.all(0.0),
-                                // tileColor: Colors.white,
-                                title: Text(
-                                  ProductTypeEnum.Male.name,
-                                  style: TextStyle(color: Colors.purple),
-                                ),
-                                onChanged: (val) {
-                                  setState(() {
-                                    _productTypeEnum = val;
-                                  });
-                                }),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Expanded(
-                            child: RadioListTile<ProductTypeEnum>(
-                                value: ProductTypeEnum.Female,
-                                groupValue: _productTypeEnum,
-                                activeColor: Color.fromARGB(255, 197, 90, 216),
-                                contentPadding: EdgeInsets.all(0.0),
-                                // tileColor: Colors.white,
-                                title: Text(ProductTypeEnum.Female.name,
-                                    style: TextStyle(color: Colors.purple)),
-                                onChanged: (val) {
-                                  setState(() {
-                                    _productTypeEnum = val;
-                                  });
-                                }),
-                          ),
-                        ],
-                      ),
+                          Colors.purple, _phone),
+                      InputBox('Gender', 'Gender', Icons.male, Colors.purple,
+                          _gender),
+                      InputBox('E-mail', 'Enter Your E-mail',
+                          Icons.email_outlined, Colors.purple, _email),
+
                       SizedBox(
-                        width: 5,
+                        height: 20,
                       ),
 
                       Padding(
@@ -255,7 +252,7 @@ class _MasseusregisScreenState extends State<MasseusregisScreen> {
                           controller: _address,
                           keyboardType: TextInputType.multiline,
                           maxLines: 4,
-                          maxLength: 200,
+                          maxLength: 300,
                           decoration: const InputDecoration(
                               hintText: "Write Your Address",
                               focusedBorder: OutlineInputBorder(

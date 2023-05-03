@@ -54,10 +54,10 @@ class MasseuseBuuton extends StatelessWidget {
         ),
       ),
       onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => MasseusDetail()),
-        );
+        //   Navigator.push(
+        //     context,
+        //     MaterialPageRoute(builder: (context) => MasseusDetail()),
+        //   );
       },
     );
   }

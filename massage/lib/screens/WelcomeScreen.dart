@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:lottie/lottie.dart';
-import 'package:massage/screens/Homes/home_screen.dart';
 import 'package:massage/screens/Login_Regis/login_screen.dart';
-import 'package:massage/screens/Login_Regis/masseus_register_screen.dart';
+import 'package:massage/screens/Login_Regis/register_screen.dart';
 import 'package:massage/screens/Login_Regis/register_status.dart';
 
 class WelcomeScreen extends StatefulWidget {

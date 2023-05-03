@@ -45,13 +45,13 @@ class _UserScreenState extends State<UserScreen> {
                     SizedBox(
                       height: 10,
                     ),
-                    Text(
-                      'USER NAME',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                      ),
-                    ),
+                    // Text(
+                    //   'USER NAME',
+                    //   style: TextStyle(
+                    //     color: Colors.white,
+                    //     fontSize: 20,
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
@@ -80,24 +80,39 @@ class _UserScreenState extends State<UserScreen> {
                               'My Address               >',
                               UserScreen(),
                             ),
+                            SizedBox(
+                              height: 20,
+                            ),
                             Underline(),
                             ButtonMasseus(
                               Icons.group,
                               'Account                     >',
                               UserScreen(),
                             ),
+                            SizedBox(
+                              height: 20,
+                            ),
                             Underline(),
                             ButtonMasseus(Icons.notifications,
                                 'Notifications              >', UserScreen()),
+                            SizedBox(
+                              height: 20,
+                            ),
                             Underline(),
                             ButtonMasseus(Icons.edit_square,
                                 'Edit Profile                 >', UserScreen()),
+                            SizedBox(
+                              height: 20,
+                            ),
                             Underline(),
                             ButtonMasseus(Icons.error,
                                 'About Me                  >', UserScreen()),
+                            SizedBox(
+                              height: 20,
+                            ),
                             Underline(),
                             ButtonMasseus(
-                                Icons.error,
+                                Icons.logout_outlined,
                                 'Logout                       >',
                                 LoginScreen()),
                           ]),

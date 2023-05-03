@@ -57,6 +57,7 @@ class _UserRegisterState extends State<UserRegister> {
           'gender': _gender.text,
           'email': _email.text,
           'address': _address.text,
+          'role': 'User'
         }),
       );
       Map<String, dynamic> jsonMap = json.decode(response.body);
@@ -157,8 +158,39 @@ class _UserRegisterState extends State<UserRegister> {
                     child: Column(children: [
                       InputBox('Username', 'Enter Your Username', Icons.person,
                           Colors.purple, _username),
-                      InputBox('Password', 'Enter Your Password', Icons.key,
-                          Colors.purple, _password),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 10),
+                        child: TextFormField(
+                          validator: (val) {
+                            if (val!.isEmpty) {
+                              return 'Empty';
+                            }
+                            return null;
+                          },
+                          controller: _password,
+                          obscuringCharacter: '*',
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            focusedBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20)),
+                            ),
+                            enabledBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20)),
+                            ),
+                            prefixIcon: Icon(Icons.key, color: Colors.purple),
+                            filled: true,
+                            fillColor: Colors.white,
+                            labelText: 'Password',
+                            hintText: '*********',
+                            labelStyle: const TextStyle(color: Colors.purple),
+                          ),
+                        ),
+                      ),
                       InputBox('Name', 'Enter Your Name', Icons.person,
                           Colors.purple, _name),
                       InputBox('Phone', 'Enter Your Phone number', Icons.phone,
@@ -221,7 +253,7 @@ class _UserRegisterState extends State<UserRegister> {
                           controller: _address,
                           keyboardType: TextInputType.multiline,
                           maxLines: 4,
-                          maxLength: 200,
+                          maxLength: 300,
                           decoration: const InputDecoration(
                               hintText: "Write Your Address",
                               focusedBorder: OutlineInputBorder(
