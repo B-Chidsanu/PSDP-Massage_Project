@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:massage/screens/BookingScreen.dart';
+import 'package:massage/screens/Navigators/user_navigation_bar.dart';
 
 import 'package:massage/screens/NotificationScreen.dart';
 import 'package:massage/screens/Account/UserScreen.dart';
@@ -196,7 +197,7 @@ class _MasseusDetailState extends State<MasseusDetail> {
                           context,
                           MaterialPageRoute(
                               builder: (BuildContext context) =>
-                                  BookingScreen())),
+                                  NavigaBarUser())),
                       style: OutlinedButton.styleFrom(
                         side: BorderSide(color: Colors.red),
                         shape: RoundedRectangleBorder(
